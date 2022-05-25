@@ -8,17 +8,13 @@ import { TextInput } from "../components/auth/AuthShared";
 
 const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccount(
-    $firstName: String!
-    $lastName: String
-    $username: String!
-    $email: String!
+    $id: String!
+    $name: String!
     $password: String!
   ) {
     createAccount(
-      firstName: $firstName
-      lastName: $lastName
-      username: $username
-      email: $email
+      id: $id
+      name: $name
       password: $password
     ) {
       ok
@@ -33,10 +29,10 @@ export default function CreateAccount({ navigation }) {
     const {
       createAccount: { ok },
     } = data;
-    const { username, password } = getValues();
+    const { id, password } = getValues();
     if (ok) {
       navigation.navigate("LogIn", {
-        username,
+        id,
         password,
       });
     }
