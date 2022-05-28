@@ -40,7 +40,7 @@ export default function Feed() {
     <ScreenLayout loading={loading}>
       <Text>작성자 제목</Text>
       <FlatList
-        onEndReachedThreshold={0.02}
+        onEnadReachedThreshold={0.02}
         onEndReached={() =>
           fetchMore({
             variables: {
