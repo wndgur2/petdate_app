@@ -1,46 +1,50 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import AppLoading from "expo-app-loading";
+import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import * as SplashScreen from 'expo-splash-screen';
-import * as Font from 'expo-font';
-import { NavigationContainer } from '@react-navigation/native';
-import LoggedOutNav from './navigators/LoggedOutNav';
+import * as Font from "expo-font";
+import { Asset } from "expo-asset";
+import LoggedOutNav from "./navigators/LoggedOutNav";
+import { NavigationContainer } from "@react-navigation/native";
 import { ApolloProvider, useReactiveVar } from "@apollo/client";
-import client, { isLoggedInVar } from "./apollo";
+import client, { isLoggedInVar, tokenVar, cache } from "./apollo";
 import LoggedInNav from "./navigators/LoggedInNav";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AsyncStorageWrapper, persistCache } from "apollo3-cache-persist";
 
 export default function App() {
-  const [appIsReady, setAppIsReady] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const onFinish = () => setLoading(false);
   const isLoggedIn = useReactiveVar(isLoggedInVar);
-
-  useEffect(() => {
-    async function prepare() {
-      try {
-        // await SplashScreen.preventAutoHideAsync();
-        // await Font.loadAsync(Ionicons.font);
-        // await new Promise(resolve => setTimeout(resolve, 2000));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setAppIsReady(true);
-      }
+  const preloadAssets = () => {
+    const fontsToLoad = [Ionicons.font];
+    const fontPromises = fontsToLoad.map((font) => Font.loadAsync(font));
+    const imagesToLoad = [require("./assets/logo.png")];
+    const imagePromises = imagesToLoad.map((image) => Asset.loadAsync(image));
+    return Promise.all([...fontPromises, ...imagePromises]);
+  };
+  const preload = async () => {
+    const token = await AsyncStorage.getItem("token");
+    if (token) {
+      isLoggedInVar(true);
+      tokenVar(token);
     }
-
-    prepare();
-  }, []);
-
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
-
-  if (!appIsReady) {
-    return null;
+    await persistCache({
+      cache,
+      storage: new AsyncStorageWrapper(AsyncStorage),
+    });
+    return preloadAssets();
+  };
+  if (loading) {
+    return (
+      <AppLoading
+        startAsync={preload}
+        onError={console.warn}
+        onFinish={onFinish}
+      />
+    );
   }
-
   return (
-    <ApolloProvider client={client} onLayout={onLayoutRootView}>
+    <ApolloProvider client={client}>
       <NavigationContainer>
         {isLoggedIn ? <LoggedInNav /> : <LoggedOutNav />}
       </NavigationContainer>

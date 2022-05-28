@@ -29,6 +29,7 @@ export default function Login({ route: { params } }) {
     const {
       login: { ok, token },
     } = data;
+
     if (ok) {
       await logUserIn(token);
     }
@@ -76,7 +77,7 @@ export default function Login({ route: { params } }) {
         value={watch("password")}
         lastOne={true}
         onSubmitEditing={handleSubmit(onValid)}
-        onChangeText={(text) => setValue("password", text)}z
+        onChangeText={(text) => setValue("password", text)}
       />
       <AuthButton
         text="로그인"

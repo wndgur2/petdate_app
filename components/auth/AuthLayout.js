@@ -11,7 +11,7 @@ const Container = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
-  background-color: ${colors.lightBeige};
+  background-color: ${colors.lightGreen};
   padding: 0px 20px;
 `;
 

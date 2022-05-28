@@ -1,13 +1,16 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Feed from "../screens/Feed";
+import { createStackNavigator } from "@react-navigation/stack";
+import TabsNav from "./TabsNav";
+import UploadNav from "./UploadNav";
+import { colors } from "../colors";
 
-const Tabs = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 export default function LoggedInNav() {
   return (
-    <Tabs.Navigator>
-      <Tabs.Screen name="Feed" component={Feed} />
-    </Tabs.Navigator>
+    <Stack.Navigator screenOptions={{presentation:"modal", headerShown:false}}>
+      <Stack.Screen name="Tabs" component={TabsNav} />
+      <Stack.Screen name="Upload" component={UploadNav} />
+    </Stack.Navigator>
   );
 }
