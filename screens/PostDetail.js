@@ -1,9 +1,11 @@
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../colors";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useReactiveVar } from "@apollo/client";
 
-export default function Post({ navigation }) {
+export default function Post({ navigation, route }) {
+  const user = route.params.user;
+  const content = route.params.content;
   return (
     <View
       style={{
@@ -13,9 +15,8 @@ export default function Post({ navigation }) {
         justifyContent: "center",
       }}
     >
-      <TouchableOpacity onPress={() => navigation.navigate("Post")}>
-        <Text style={{ color: "black" }}>Post</Text>
-      </TouchableOpacity>
+      <Text>{user.name}</Text>
+      <Text>{content}</Text>
     </View>
   );
 }

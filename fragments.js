@@ -8,6 +8,17 @@ export const USER_FRAGMENT = gql`
   }
 `;
 
+export const MESSAGE_FRAGMENT = gql`
+  fragment MessageFragment on Message {
+    SN
+    payload
+    user
+    room
+    read
+    createdAt
+  }
+`;
+
 export const POST_FRAGMENT = gql`
   fragment PostFragment on Post{
     SN

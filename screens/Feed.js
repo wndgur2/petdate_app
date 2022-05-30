@@ -7,6 +7,7 @@ import { colors } from "../colors";
 import AuthButton from "../components/auth/AuthButton";
 import { USER_FRAGMENT } from "../fragments";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Caption, CaptionText, CaptionText25, CaptionText50, ExtraContainer } from "../components/auth/AuthShared";
 
 const FEED_QUERY = gql`
 query seeFeed($offset: Int!) {
@@ -38,7 +39,13 @@ export default function Feed() {
   const [refreshing, setRefreshing] = useState(false);
   return (
     <ScreenLayout loading={loading}>
-      <Text>작성자 제목</Text>
+      <ExtraContainer>
+        <Caption>
+          <CaptionText25>작성자</CaptionText25>
+          <CaptionText50>목적</CaptionText50>
+          <CaptionText25>장소/시간</CaptionText25>
+        </Caption>
+      </ExtraContainer>
       <FlatList
         onEnadReachedThreshold={0.02}
         onEndReached={() =>

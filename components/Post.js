@@ -6,34 +6,20 @@ import styled from "styled-components/native";
 import { Image, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { colors } from "../colors";
+import { Caption, CaptionText, CaptionText25, CaptionText50, ExtraContainer, Text25, Text50, TextG25, TextG50, TextLightG50 } from "./auth/AuthShared";
 
 const Container = styled.View``;
 const Header = styled.TouchableOpacity`
-  
   padding: 10px;
   flex-direction: row;
   align-items: center;
   margin-bottom: 0px;
   padding-bottom: 0px;
 `;
-const Userid = styled.Text`
-  color: black ;
-  font-weight: 400;
-`;
 const Username = styled.Text`
+  width:25%;
   color: ${colors.darkGreen} ;
   font-weight: 600;
-`;
-const Caption = styled.View`
-  flex-direction: row;
-`;
-const CaptionText = styled.Text`
-  color: black ;
-  font-weight: 800;
-  margin-left: 5px;
-`;
-const ExtraContainer = styled.View`
-  padding: 10px;
 `;
 
 function Post({ SN, user, content}) {
@@ -41,16 +27,14 @@ function Post({ SN, user, content}) {
   const { width, height } = useWindowDimensions();
   return (
     <Container>
-    <Header onPress={() => navigation.navigate("SProfile")}>
-      <Userid>{user.id}</Userid>
-      </Header>
       <ExtraContainer>
-        <Caption>
-          <TouchableOpacity onPress={() => navigation.navigate("SProfile")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Post",{user, content})}>
+          <Caption>
             <Username>{user.name}</Username>
-          </TouchableOpacity>
-          <CaptionText>{content}</CaptionText>
-        </Caption>
+            <TextLightG50>{content}</TextLightG50>
+            <Text25>장소/시간</Text25>
+          </Caption>
+        </TouchableOpacity>
       </ExtraContainer>
     </Container>
   );

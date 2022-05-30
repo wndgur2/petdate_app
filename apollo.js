@@ -27,7 +27,7 @@ export const logUserOut = async () => {
   tokenVar(null);
 };
 
-const uploadHttpLink = createUploadLink({uri: "https://eleven-rice-repair-121-137-185-2.loca.lt/graphql",});
+const uploadHttpLink = createUploadLink({uri: "https://hot-tires-reply-121-137-185-2.loca.lt/graphql",});
 
 const authLink = setContext((_, { headers }) => {
   return {

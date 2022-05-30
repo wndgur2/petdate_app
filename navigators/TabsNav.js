@@ -16,6 +16,7 @@ export default function TabsNav() {
         headerStyle:{backgroundColor:colors.lightBrown},
         activeTintColor: "white",
         showLabel: false,
+        tabBarInactiveTintColor: "black",
         tabBarActiveBackgroundColor:colors.lightBrown,
         tabBarActiveTintColor:colors.darkGreen,
         tabBarInactiveBackgroundColor: colors.lightGreen,

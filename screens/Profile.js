@@ -4,6 +4,7 @@ import { colors } from "../colors";
 
 export default function Profile({ navigation, route }) {
   useEffect(() => {
+    console.log(route.params.name);
     if (route?.params?.name) {
       navigation.setOptions({
         title: route.params.name,
@@ -19,7 +20,7 @@ export default function Profile({ navigation, route }) {
         justifyContent: "center",
       }}
     >
-      <Text style={{ color: "black" }}>Someones Profile</Text>
+      <Text style={{ color: "black" }}>Someones Profile!</Text>
     </View>
   );
 }
