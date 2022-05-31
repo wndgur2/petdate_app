@@ -7,11 +7,7 @@ import useMe from "../hooks/useMe";
 
 export default function MyProfile({navigation}) {
   const { data } = useMe();
-  useEffect(() => {
-    navigation.setOptions({
-      title: data?.me?.name,
-    });
-  }, []);
+
   const logOut = async()=>{await logUserOut()}
   return (
     <View
@@ -23,6 +19,9 @@ export default function MyProfile({navigation}) {
       }}
     >
       <Text style={{ color: "black" }}>내 프로필</Text>
+      <Text>{data.getMe.SN}</Text>
+      <Text>{data.getMe.id}</Text>
+      <Text>{data.getMe.name}</Text>
       <TouchableOpacity onPress={logOut}><Text>로그아웃</Text></TouchableOpacity>
     </View>
   );

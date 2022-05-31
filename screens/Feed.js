@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useReactiveVar } from "@apollo/client";
 import React, {useState} from "react";
 import { FlatList, Text, View } from "react-native";
 import Post from "../components/Post";
@@ -8,6 +8,7 @@ import AuthButton from "../components/auth/AuthButton";
 import { USER_FRAGMENT } from "../fragments";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Caption, CaptionText, CaptionText25, CaptionText50, ExtraContainer } from "../components/auth/AuthShared";
+import { isLoggedInVar } from "../apollo";
 
 const FEED_QUERY = gql`
 query seeFeed($offset: Int!) {
@@ -36,6 +37,8 @@ export default function Feed() {
     await refetch();
     setRefreshing(false);
   };
+
+  console.log(useReactiveVar(isLoggedInVar));
   const [refreshing, setRefreshing] = useState(false);
   return (
     <ScreenLayout loading={loading}>

@@ -3,13 +3,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image, View } from "react-native";
 import TabIcon from "../components/nav/TabIcon";
 import SharedStackNav from "./SharedStackNav";
-import useMe from "../hooks/useMe";
 import { colors } from "../colors";
 
 const Tabs = createBottomTabNavigator();
 
 export default function TabsNav() {
-  const { data } = useMe();
   return (
     <Tabs.Navigator
       screenOptions={{

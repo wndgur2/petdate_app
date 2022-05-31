@@ -9,9 +9,17 @@ import { colors } from "../colors";
 import { Caption, CaptionText, ChatroomContainer, ExtraContainer } from "../components/auth/AuthShared";
 import { USER_FRAGMENT } from "../fragments";
 import { gql, useQuery } from "@apollo/client";
-import useMe from "../hooks/useMe";
 
 const Container = styled.View``;
+
+const ME_QUERY = gql`
+  query getMe {
+    getMe {
+      ...UserFragment
+    }
+  }
+${USER_FRAGMENT}
+`;
 
 export default function Room({ SN, users, messages}) {
   const navigation = useNavigation();
@@ -21,13 +29,15 @@ export default function Room({ SN, users, messages}) {
   const date = new Date();
   date.setTime(parseFloat(lastMessage.createdAt));
 
-  const {data} = useMe();
+  const {data} = useQuery(ME_QUERY);
+  const talkingTo = (users[0].name === data.getMe.name ? users[1] : users[0]);
+
   return (
     <Container>
       <ExtraContainer>
-        <TouchableOpacity onPress={() => navigation.navigate("Chatroom", {users, messages})}>
+        <TouchableOpacity onPress={() => navigation.navigate("Chatroom", {talkingTo, SN})}>
           <Caption>
-            <CaptionText>{users[0].name === data.me.name ? users[1].name : users[0].name}</CaptionText>
+            <CaptionText>{talkingTo.name}</CaptionText>
             <CaptionText>{lastMessage.user.name}: {lastMessage.payload}</CaptionText>
             <CaptionText>{date.toLocaleDateString()+" "+date.toLocaleTimeString()}</CaptionText>
           </Caption>
