@@ -6,9 +6,16 @@ import getMe from "../hooks/getMe";
 
 
 export default function MyProfile({navigation}) {
-  const { data:my } = getMe();
+  
+  const { data:myData } = getMe();
 
-  const logOut = async()=>{await logUserOut()}
+  const logOut = async()=>{await logUserOut();}
+  if(!myData) {
+    return (<View>
+      <Text> getMe ERROR </Text>
+      <TouchableOpacity onPress={logOut}><Text>로그아웃</Text></TouchableOpacity>
+    </View>)
+  }
   return (
     <View
       style={{
@@ -19,9 +26,9 @@ export default function MyProfile({navigation}) {
       }}
     >
       <Text style={{ color: "black" }}>내 프로필</Text>
-      {/* <Text>{my.getMe.SN}</Text>
-      <Text>{my.getMe.id}</Text>
-      <Text>{my.getMe.name}</Text> */}
+      <Text>{myData.getMe.SN}</Text>
+      <Text>{myData.getMe.id}</Text>
+      <Text>{myData.getMe.name}</Text>
       <TouchableOpacity onPress={logOut}><Text>로그아웃</Text></TouchableOpacity>
     </View>
   );

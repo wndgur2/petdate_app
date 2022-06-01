@@ -8,6 +8,7 @@ import AuthButton from "../components/auth/AuthButton";
 import { USER_FRAGMENT, MESSAGE_FRAGMENT } from "../fragments";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Caption, CaptionText, CaptionText25, CaptionText50, ExtraContainer } from "../components/auth/AuthShared";
+import getMe from "../hooks/getMe";
 
 const ROOMS_QUERY = gql`
 query seeRooms {
@@ -22,6 +23,8 @@ query seeRooms {
 
 export default function Chatrooms() {
   const { data, loading, refetch, fetchMore } = useQuery(ROOMS_QUERY);
+  const { data:me } = getMe();
+  console.log(me);
   
   const renderRoom = ({ item: room }) => {
     return <Room {...room} />;

@@ -14,6 +14,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createUploadLink } from "apollo-upload-client";
 import { WebSocketLink } from "@apollo/client/link/ws";
+import { USER_FRAGMENT } from "./fragments";
 
 export const isLoggedInVar = makeVar(false);
 export const tokenVar = makeVar("");
@@ -92,5 +93,10 @@ const splitLink = split(
 const client = new ApolloClient({
   link: splitLink,
   cache,
+  defaultOptions :{
+    query:{
+      fetchPolicy:'no-cache',
+    }
+  }
 });
 export default client;

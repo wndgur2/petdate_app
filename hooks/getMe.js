@@ -13,6 +13,6 @@ ${USER_FRAGMENT}
 `;
 
 export default function getMe() {
-  const { data } = useQuery(ME_QUERY)
+  const { data } = useQuery(ME_QUERY, {fetchPolicy: "no-cache" })
   return { data };
 }
