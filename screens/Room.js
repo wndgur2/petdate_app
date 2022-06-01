@@ -8,19 +8,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { colors } from "../colors";
 import { Caption, CaptionText, ChatroomContainer, ExtraContainer } from "../components/auth/AuthShared";
 import { USER_FRAGMENT } from "../fragments";
-import { gql, useQuery } from "@apollo/client";
+import getMe from "../hooks/getMe";
 
 const Container = styled.View``;
-
-const ME_QUERY = gql`
-  query getMe {
-    getMe {
-      ...UserFragment
-    }
-  }
-${USER_FRAGMENT}
-`;
-
 export default function Room({ SN, users, messages}) {
   const navigation = useNavigation();
   const { width, height } = useWindowDimensions();
@@ -29,8 +19,8 @@ export default function Room({ SN, users, messages}) {
   const date = new Date();
   date.setTime(parseFloat(lastMessage.createdAt));
 
-  const {data} = useQuery(ME_QUERY);
-  const talkingTo = (users[0].name === data.getMe.name ? users[1] : users[0]);
+  const {data:me} = getMe();
+  const talkingTo = (users[0].name === me.getMe.name ? users[1] : users[0]);
 
   return (
     <Container>

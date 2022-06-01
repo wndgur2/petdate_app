@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../colors";
 import { logUserOut } from "../apollo";
-import useMe from "../hooks/useMe";
+import getMe from "../hooks/getMe";
 
 
 export default function MyProfile({navigation}) {
-  const { data } = useMe();
+  const { data:my } = getMe();
 
   const logOut = async()=>{await logUserOut()}
   return (
@@ -19,9 +19,9 @@ export default function MyProfile({navigation}) {
       }}
     >
       <Text style={{ color: "black" }}>내 프로필</Text>
-      <Text>{data.getMe.SN}</Text>
-      <Text>{data.getMe.id}</Text>
-      <Text>{data.getMe.name}</Text>
+      {/* <Text>{my.getMe.SN}</Text>
+      <Text>{my.getMe.id}</Text>
+      <Text>{my.getMe.name}</Text> */}
       <TouchableOpacity onPress={logOut}><Text>로그아웃</Text></TouchableOpacity>
     </View>
   );

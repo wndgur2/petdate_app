@@ -5,7 +5,7 @@ import ScreenLayout from "../components/ScreenLayout";
 import styled from "styled-components/native";
 import { useForm } from "react-hook-form";
 import { Ionicons } from "@expo/vector-icons";
-import useMe from "../hooks/useMe";
+import getMe from "../hooks/getMe";
 import { colors } from "../colors";
 
 const SEND_MESSAGE_MUTATION = gql`
@@ -68,7 +68,7 @@ const InputContainer = styled.View`
 const SendButton = styled.TouchableOpacity``;
 
 export default function Chatroom({ route, navigation }) {
-  const { data: meData } = useMe();
+  const { data: meData } = getMe();
   const { register, setValue, handleSubmit, getValues, watch } = useForm();
   const updateSendMessage = (cache, result) => {
     const {

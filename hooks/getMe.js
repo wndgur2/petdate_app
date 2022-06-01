@@ -12,7 +12,7 @@ const ME_QUERY = gql`
 ${USER_FRAGMENT}
 `;
 
-export default function useMe() {
+export default function getMe() {
   const { data } = useQuery(ME_QUERY)
   return { data };
 }

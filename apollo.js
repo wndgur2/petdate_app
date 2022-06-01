@@ -32,12 +32,14 @@ export const logUserOut = async () => {
   tokenVar(null);
 };
 
+const u = "556f-2001-e60-3173-1a2c-5966-5b81-c8b4-a976.jp.ngrok.io";
+
 const uploadHttpLink = createUploadLink({
-  uri: "https://ac99-211-250-29-85.jp.ngrok.io/graphql",
+  uri: "https://"+u+"/graphql",
 });
 
 const wsLink = new WebSocketLink({
-  uri: "ws://ac99-211-250-29-85.jp.ngrok.io/graphql",
+  uri: "ws://"+u+"/graphql",
   options: {
     connectionParams: () => ({
       token: tokenVar(),
