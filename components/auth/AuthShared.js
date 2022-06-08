@@ -16,7 +16,8 @@ export const Caption = styled.View`
 export const CaptionText = styled.Text`
   font-weight: 900;
   font-size: 16px;
-  width:25%;
+  width:30%;
+  color: ${colors.darkGreen};
 `;
 export const CaptionText25 = styled.Text`
   color: ${colors.darkGreen} ;
@@ -35,12 +36,14 @@ export const CaptionText50 = styled.Text`
 export const Text25 = styled.Text`
 color: ${colors.darkGreen} ;
   font-weight: 800;
+  font-size: 16px;
   justify-content:center;
   width: 25%;
 `;
 export const TextG25 = styled.Text`
 color: ${colors.darkGreen} ;
-  font-weight: 800;
+  font-weight: 700;
+  font-size: 16px;
   justify-content:center;
   width: 25%;
 `;
@@ -50,9 +53,24 @@ color: ${colors.darkGreen} ;
   justify-content:center;
   width: 50%;
 `;
+export const TextG = styled.Text`
+color: ${colors.darkGreen} ;
+  font-weight: 800;
+  font-size: 18px;
+  justify-content:center;
+  padding: 5px;
+`;
+export const TextLightG25 = styled.Text`
+color: ${colors.darkGreen} ;
+  font-weight: 400;
+  font-size: 16px;
+  justify-content:center;
+  width: 25%;
+`;
 export const TextLightG50 = styled.Text`
 color: ${colors.darkGreen} ;
   font-weight: 400;
+  font-size: 16px;
   justify-content:center;
   width: 50%;
 `;
@@ -65,4 +83,8 @@ export const ChatroomContainer = styled.View`
   width: 100%;
   justify-content:space-around;
   display:flex;
+`;
+export const Row = styled.View`
+  flex-direction: row;
+  padding-bottom: 15px;
 `;

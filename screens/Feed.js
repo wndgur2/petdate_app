@@ -18,6 +18,8 @@ query seeFeed($offset: Int!) {
         ...UserFragment
       }
       content
+      time
+      location
     }
   }
   ${USER_FRAGMENT}
@@ -29,24 +31,23 @@ export default function Feed() {
       offset: 0,
     },
   });
-    const renderPost = ({ item: post }) => {
-    return <Post {...post} />;
-  };
   const refresh = async () => {
     setRefreshing(true);
     await refetch();
     setRefreshing(false);
   };
-
-  console.log(useReactiveVar(isLoggedInVar));
   const [refreshing, setRefreshing] = useState(false);
+  const renderPost = ({ item: post }) => {
+    return <Post {...post} />;
+  };
   return (
     <ScreenLayout loading={loading}>
       <ExtraContainer>
         <Caption>
           <CaptionText25>작성자</CaptionText25>
-          <CaptionText50>목적</CaptionText50>
-          <CaptionText25>장소/시간</CaptionText25>
+          <CaptionText25>목적</CaptionText25>
+          <CaptionText25>장소</CaptionText25>
+          <CaptionText25>시간</CaptionText25>
         </Caption>
       </ExtraContainer>
       <FlatList

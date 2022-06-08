@@ -33,7 +33,7 @@ export const logUserOut = async () => {
   tokenVar(null);
 };
 
-const u = "556f-2001-e60-3173-1a2c-5966-5b81-c8b4-a976.jp.ngrok.io";
+const u = "e0cc-211-250-29-85.jp.ngrok.io";
 
 const uploadHttpLink = createUploadLink({
   uri: "https://"+u+"/graphql",
@@ -73,6 +73,12 @@ export const cache = new InMemoryCache({
         seeFeed: offsetLimitPagination(),
       },
     },
+    Message:{
+      keyFields:["SN"],
+    },
+    Room:{
+      keyFields:["SN"],
+    },
   },
 });
 
@@ -93,10 +99,5 @@ const splitLink = split(
 const client = new ApolloClient({
   link: splitLink,
   cache,
-  defaultOptions :{
-    query:{
-      fetchPolicy:'no-cache',
-    }
-  }
 });
 export default client;

@@ -15,7 +15,7 @@ query seeRooms {
   seeRooms {
       SN,
       users{ SN, name },
-      messages{ user{...UserFragment}, payload, createdAt }
+      messages{ SN, user{...UserFragment}, payload, createdAt }
     }
   }
   ${USER_FRAGMENT}
@@ -24,10 +24,12 @@ query seeRooms {
 export default function Chatrooms() {
   const { data, loading, refetch, fetchMore } = useQuery(ROOMS_QUERY);
   const { data:me } = getMe();
-  console.log(me);
   
   const renderRoom = ({ item: room }) => {
-    return <Room {...room} />;
+    if(room.messages.length>0)
+      return <Room {...room} />;
+    else
+      return <View></View>
   };
   const refresh = async () => {
     setRefreshing(true);
@@ -39,9 +41,9 @@ export default function Chatrooms() {
     <ScreenLayout loading={loading}>
     <ExtraContainer>
       <Caption>
-        <CaptionText>상대방</CaptionText>
+        <CaptionText>대화상대</CaptionText>
         <CaptionText>최근채팅</CaptionText>
-        <CaptionText>수신일</CaptionText>
+        <CaptionText>작성시각</CaptionText>
       </Caption>
     </ExtraContainer>
       <FlatList

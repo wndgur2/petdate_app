@@ -6,9 +6,11 @@ import styled from "styled-components/native";
 import { Image, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { colors } from "../colors";
-import { Caption, CaptionText, CaptionText25, CaptionText50, ExtraContainer, Text25, Text50, TextG25, TextG50, TextLightG50 } from "./auth/AuthShared";
+import { Caption, CaptionText, CaptionText25, CaptionText50, ExtraContainer, Text25, Text50, TextG25, TextG50, TextLightG25, TextLightG50 } from "./auth/AuthShared";
 
-const Container = styled.View``;
+const Container = styled.View`
+  padding: 7px;
+`;
 const Header = styled.TouchableOpacity`
   padding: 10px;
   flex-direction: row;
@@ -16,23 +18,25 @@ const Header = styled.TouchableOpacity`
   margin-bottom: 0px;
   padding-bottom: 0px;
 `;
-const Username = styled.Text`
-  width:25%;
+export const Username = styled.Text`
+  width:20%;
+  font-size: 16px;
   color: ${colors.darkGreen} ;
   font-weight: 600;
 `;
 
-function Post({ SN, user, content}) {
+function Post({ SN, user, content, location, time}) {
   const navigation = useNavigation();
   const { width, height } = useWindowDimensions();
   return (
     <Container>
       <ExtraContainer>
-        <TouchableOpacity onPress={() => navigation.navigate("Post",{user, content})}>
+        <TouchableOpacity onPress={() => navigation.navigate("Post",{user, content, time, location})}>
           <Caption>
             <Username>{user.name}</Username>
-            <TextLightG50>{content}</TextLightG50>
-            <Text25>장소/시간</Text25>
+            <Text25>{content}</Text25>
+            <TextLightG25>{location}</TextLightG25>
+            <TextLightG25>{time}</TextLightG25>
           </Caption>
         </TouchableOpacity>
       </ExtraContainer>

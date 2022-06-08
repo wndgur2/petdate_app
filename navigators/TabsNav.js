@@ -21,7 +21,7 @@ export default function TabsNav() {
       }}
     >
       <Tabs.Screen
-        name="Feed"
+        name="게시판"
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon iconName={"home"} color={color} focused={focused} />
@@ -31,7 +31,7 @@ export default function TabsNav() {
         {() => <SharedStackNav screenName="Feed" />}
       </Tabs.Screen>
       <Tabs.Screen
-        name="Search"
+        name="검색"
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon iconName={"search"} color={color} focused={focused} />
@@ -41,7 +41,7 @@ export default function TabsNav() {
         {() => <SharedStackNav screenName="Search" />}
       </Tabs.Screen>
       <Tabs.Screen
-        name="Post"
+        name="업로드"
         component={View}
         listeners={({ navigation }) => {
           return {
@@ -58,7 +58,7 @@ export default function TabsNav() {
         }}
       />
       <Tabs.Screen
-        name="Chatrooms"
+        name="채팅방"
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon iconName={"chatbubbles"} color={color} focused={focused} />
@@ -68,7 +68,7 @@ export default function TabsNav() {
         {() => <SharedStackNav screenName="Chatrooms" />}
       </Tabs.Screen>
       <Tabs.Screen
-        name="MyProfile"
+        name="내 프로필"
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon iconName={"person"} color={color} focused={focused} />

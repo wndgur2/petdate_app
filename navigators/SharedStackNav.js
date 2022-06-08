@@ -9,6 +9,7 @@ import MyProfile from "../screens/MyProfile";
 import { Image } from "react-native";
 import { colors } from "../colors";
 import Chatroom from "../screens/Chatroom";
+import NewChatroom from "../screens/NewChatroom";
 
 const Stack = createStackNavigator();
 
@@ -45,6 +46,7 @@ export default function SharedStackNav({ screenName }) {
       <Stack.Screen name="SProfile" component={Profile} options={{ headerShown: false }} />
       <Stack.Screen name="Post" component={Post} options={{ headerShown: false }}/>
       <Stack.Screen name="Chatroom" component={Chatroom} options={{ headerShown: false }}/>
+      <Stack.Screen name="NewChatroom" component={NewChatroom} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }

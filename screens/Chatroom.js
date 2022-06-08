@@ -1,19 +1,33 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useApolloClient, useMutation, useQuery } from "@apollo/client";
 import React, { useEffect } from "react";
-import { FlatList, KeyboardAvoidingView, KeyboardAvoSNingView, View } from "react-native";
+import { FlatList, KeyboardAvoidingView, KeyboardAvoSNingView, Text, View } from "react-native";
 import ScreenLayout from "../components/ScreenLayout";
 import styled from "styled-components/native";
 import { useForm } from "react-hook-form";
 import { Ionicons } from "@expo/vector-icons";
 import getMe from "../hooks/getMe";
 import { colors } from "../colors";
+import { TouchableOpacity } from "react-native-gesture-handler";
+
+const ROOM_UPDATES = gql`
+  subscription roomUpdates($SN: Int!) {
+    roomUpdates(SN: $SN) {
+      SN
+      payload
+      user {
+        name
+      }
+      read
+    }
+  }
+`;
 
 const SEND_MESSAGE_MUTATION = gql`
   mutation sendMessage($payload: String!, $roomSN: Int, $userSN: Int) {
     sendMessage(payload: $payload, roomSN: $roomSN, userSN: $userSN) {
       ok
       error
-      SN
+      messageSN
     }
   }
 `;
@@ -41,7 +55,7 @@ const MessageContainer = styled.View`
 `;
 const Message = styled.Text`
   color: black;
-  background-color: rgba(53, 78, 22, 0.3);
+  background-color: rgba(83, 148, 62, 0.3);
   padding: 5px 10px;
   overflow: hidden;
   border-radius: 10px;
@@ -68,28 +82,37 @@ const InputContainer = styled.View`
 const SendButton = styled.TouchableOpacity``;
 
 export default function Chatroom({ route, navigation }) {
-  const { data: meData } = getMe();
   const { register, setValue, handleSubmit, getValues, watch } = useForm();
+
   const updateSendMessage = (cache, result) => {
     const {
       data: {
-        sendMessage: { ok, error, SN },
+        sendMessage: { ok, error, messageSN },
       },
     } = result;
-    if (ok && meData) {
+    if (ok) {
       const { message } = getValues();
       setValue("message", "");
+
+      const { data: meData } = getMe();
+      const logOut = async()=>{await logUserOut();}
+      if(!meData){
+        return (<View style={{backgroundColor:colors.lightGreen}}>
+          <Text> getMe ERROR </Text>
+          <TouchableOpacity onPress={logOut}><Text>로그아웃</Text></TouchableOpacity>
+        </View>)
+      }
+
       const messageObj = {
-        SN,
+        SN:messageSN,
         payload: message,
         user: {
-          name: meData.getMe.name,
+          name: meData.me.name,
         },
         read: true,
         __typename: "Message",
       };
       const messageFragment = cache.writeFragment({
-        id: 'Message:'+SN,
         fragment: gql`
           fragment NewMessage on Message {
             SN
@@ -103,7 +126,7 @@ export default function Chatroom({ route, navigation }) {
         data: messageObj,
       });
       cache.modify({
-        SN: `Room:${route.params.SN}`,
+        id: `Room:${route.params.SN}`,
         fields: {
           messages(prev) {
             return [...prev, messageFragment];
@@ -119,11 +142,62 @@ export default function Chatroom({ route, navigation }) {
     }
   );
 
-  const { data, loading } = useQuery(ROOM_QUERY, {
+  const { data:room, loading, subscribeToMore } = useQuery(ROOM_QUERY, {
     variables: {
       SN: route?.params?.SN,
     },
+    pollInterval: 100,
   });
+
+  const client = useApolloClient();
+  const updateQuery = (prevQuery, options) => {
+    const {
+      subscriptionData: {
+        data: { roomUpdates: message },
+      },
+    } = options;
+    if (message.SN) {
+      const incomingMessage = client.cache.writeFragment({
+        fragment: gql`
+          fragment NewMessage on Message {
+            SN
+            payload
+            user {
+              name
+            }
+            read
+          }
+        `,
+        data: message,
+      });
+      client.cache.modify({
+        id: `Room:${route.params.SN}`,
+        fields: {
+          messages(prev) {
+            const existingMessage = prev.find(
+              (aMessage) => aMessage.__ref === incomingMessage.__ref
+            );
+            if (existingMessage) {
+              return prev;
+            }
+            return [...prev, incomingMessage];
+          },
+        },
+      });
+    }
+  };
+  useEffect(() => {
+    if (room?.seeRoom) {
+      subscribeToMore({
+        document: ROOM_UPDATES,
+        variables: {
+          SN: route?.params?.SN,
+        },
+        updateQuery,
+      });
+    }
+  }, [room]);
+
   const onValid = ({ message }) => {
     if (!sendingMessage) {
       sendMessageMutation({
@@ -134,15 +208,11 @@ export default function Chatroom({ route, navigation }) {
       });
     }
   };
+
   useEffect(() => {
     register("message", { required: true });
   }, [register]);
-  
-  useEffect(() => {
-    navigation.setOptions({
-      title: `${route?.params?.talkingTo?.name}`,
-    });
-  }, []);
+
   const renderItem = ({ item: message }) => (
     <MessageContainer
       outGoing={message.user.name !== route?.params?.talkingTo?.name}
@@ -150,14 +220,14 @@ export default function Chatroom({ route, navigation }) {
       <Message>{message.payload}</Message>
     </MessageContainer>
   );
-  const messages = [...(data?.seeRoom?.messages ?? [])];
+  const messages = [...(room?.seeRoom?.messages ?? [])];
   messages.reverse();
   
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: colors.lightGreen }}
       behavior="padding"
-      keyboardVerticalOffset={-150}
+      keyboardVerticalOffset={-170}
     >
       <ScreenLayout loading={loading}>
         <FlatList
@@ -188,9 +258,9 @@ export default function Chatroom({ route, navigation }) {
               color={
                 !Boolean(watch("message"))
                   ? "rgba(53, 78, 22, 0.5)"
-                  : "black"
+                  : colors.darkGreen
               }
-              size={22}
+              size={25}
             />
           </SendButton>
         </InputContainer>
