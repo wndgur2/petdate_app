@@ -14,5 +14,5 @@ export default function ScreenLayout({ loading, children }) {
     >
       {loading ? <ActivityIndicator color="black" /> : children}
     </View>
-  );
-}
+      );
+    }
